@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+      "module": "commonjs",
+      "target": "es2017",
+      "noImplicitAny": false,
+      "moduleResolution": "node",
+      "sourceMap": true,
+      "outDir": "./dist",  // TS文件编译后会放入到此文件夹内
+      "baseUrl": ".",
+      "typeRoots": [
+        "node_modules/@types"
+      ],
+      "paths": {
+        "@/*": ["src/*"]
+      }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

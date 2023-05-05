@@ -1,0 +1,35 @@
+{
+  "name": "english-film-koa",
+  "version": "1.0.0",
+  "description": "看电影背单词的",
+  "main": "/src/app.js",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=dev nodemon --watch 'src/' -e ts,tsx --exec ts-node src/app.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "senlin",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "crypto": "^1.0.1",
+    "dayjs": "^1.11.7",
+    "jsonwebtoken": "^9.0.0",
+    "koa": "^2.14.2",
+    "koa-bodyparser": "^4.4.0",
+    "koa-jwt": "^4.0.4",
+    "koa-parameter": "^3.0.1",
+    "koa-router": "^12.0.0",
+    "mysql2": "^3.2.4",
+    "sequelize": "^6.31.1",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/koa": "^2.13.6",
+    "@types/koa-router": "^7.4.4",
+    "@types/node": "^18.16.3",
+    "cross-env": "^7.0.3",
+    "nodemon": "^2.0.22",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  }
+}
