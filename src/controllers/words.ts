@@ -1,6 +1,6 @@
-const { getYoudaoAndFormat } = require('../server/word')
-
-export async function youdao(ctx: any) {
+import { Context } from 'koa'
+import { getYoudaoAndFormat } from '../server/word'
+export async function youdao(ctx: Context) {
   ctx.verifyParams({
     word: { type: 'string', required: true }
   })
