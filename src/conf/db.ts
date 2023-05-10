@@ -5,7 +5,7 @@ let _MYSQL_CONF = {
   user: 'root',
   password: DEV_MYSQL_KEY,
   port: '3306',
-  database: 'words'
+  database: 'film'
 }
   
 if (isProd) {
@@ -13,7 +13,7 @@ if (isProd) {
     user: 'root',
     password: PROD_MYSQL_KEY,
     port: '3306',
-    database: 'words'
+    database: 'film'
   }
 }
 export const MYSQL_CONF = _MYSQL_CONF

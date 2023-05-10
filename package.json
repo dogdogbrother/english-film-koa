@@ -5,7 +5,9 @@
   "main": "/src/app.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=dev nodemon --watch 'src/' -e ts,tsx --exec ts-node src/app.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sync:alter": "ts-node ./src/db/alter-sync.ts",
+    "sync:force": "ts-node ./src/db/force-sync.ts"
   },
   "author": "senlin",
   "license": "ISC",
