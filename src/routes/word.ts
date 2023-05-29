@@ -7,6 +7,6 @@ const router = new Router({ prefix:'/word' })
 const auth = jwt({ secret: _JWT_KEY_ })
 
 router.get('/translate/:word', youdao)
-router.post('/collect/:word', auth, collect)
+router.post('/collect', auth, collect)
 
 export default router

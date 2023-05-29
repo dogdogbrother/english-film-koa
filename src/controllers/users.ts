@@ -3,8 +3,7 @@ import { _JWT_KEY_ } from '../conf/secretKeys'
 import * as Sequelize from 'sequelize'
 import * as jsonwebtoken from 'jsonwebtoken'
 import doCrypto from '../utils/cryp'
-
-const { User } = require('../models/index')
+import { User } from '../models/index'
 
 const Op = Sequelize.Op
 
@@ -38,6 +37,12 @@ export async function login(ctx: Context) {
   }
   // 匹配 登录
   return sign(ctx, user.id, user.username, 'login')
+}
+
+export async function info(ctx: Context) {
+  const { id } = ctx.state.user
+  const user = await User.findByPk(id)
+  ctx.body = user
 }
 function sign(ctx: Context, id: number, username: string, type: 'login' | 'register') {
   const token = jsonwebtoken.sign(
