@@ -1,10 +1,10 @@
 import routing from './routes'
 import * as Koa from 'koa'
-import * as bodyparser from 'koa-bodyparser'
+import { koaBody } from 'koa-body'
 import * as parameter from 'koa-parameter'
-
 const app = new Koa()   
-app.use(bodyparser())
+
+app.use(koaBody({multipart: true}))
 app.use(parameter(app))
 routing(app)
 

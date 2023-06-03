@@ -1,18 +1,19 @@
 import seq from '../db/seq'
 import { STRING } from '../db/types'
 import { Model, InferAttributes, InferCreationAttributes } from 'sequelize'
-class UserProp  {
+
+class ManageUserProp  {
   username: string
   password: string
 }
-class UserModel extends Model<InferAttributes<UserModel>, InferCreationAttributes<UserModel>>  {
+class ManageUserModel extends Model<InferAttributes<ManageUserModel>, InferCreationAttributes<ManageUserModel>>  {
   public id?: number;
   public username!: string;
   public password!: string;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
-const User = seq.define<UserModel, UserProp>('user', {
+const ManageUser = seq.define<ManageUserModel, ManageUserProp>('user', {
   username: {
     type: STRING,
     allowNull: false,
@@ -33,4 +34,4 @@ const User = seq.define<UserModel, UserProp>('user', {
   }
 })
 
-export default User
+export default ManageUser

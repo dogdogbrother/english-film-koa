@@ -7,7 +7,7 @@ import { User } from '../models/index'
 
 const Op = Sequelize.Op
 
-interface LoginProp{
+export interface LoginProp{
   username: string
   password: string
 }
@@ -28,7 +28,7 @@ export async function login(ctx: Context) {
   })
   // 连用户名都没,直接注册
   if (!findUserName) {
-    const createUser = await register({username, password})
+    const createUser = await register({username, password}, User)
     return sign(ctx, createUser.id, createUser.username, 'register')
   }
   // 有用户名但是密码不对
@@ -44,7 +44,7 @@ export async function info(ctx: Context) {
   const user = await User.findByPk(id)
   ctx.body = user
 }
-function sign(ctx: Context, id: number, username: string, type: 'login' | 'register') {
+export function sign(ctx: Context, id: number, username: string, type: 'login' | 'register') {
   const token = jsonwebtoken.sign(
     { 
       id,
@@ -59,8 +59,8 @@ function sign(ctx: Context, id: number, username: string, type: 'login' | 'regis
     type
   } 
 }
-async function register(data: LoginProp) {
-  return await User.create({
+export async function register(data: LoginProp, Model: any) {
+  return await Model.create({
     username: data.username,
     password: doCrypto(data.password)
   })
