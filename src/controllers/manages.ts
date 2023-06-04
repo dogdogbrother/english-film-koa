@@ -43,10 +43,6 @@ export async function info(ctx: Context) {
   ctx.body = user
 }
 
-export async function filmList(ctx: Context) {
-  
-}
-
 export async function addFilm(ctx: Context) {
   ctx.verifyParams({
     filmName: { type: 'string', required: true, min: 1 },
