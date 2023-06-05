@@ -23,7 +23,6 @@ const Film = seq.define<FilmModel, FilmProp>('film', {
   filmCover: {
     type: STRING,
     allowNull: false,
-    unique: true,
     comment: '电影封面'
   }
 })

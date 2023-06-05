@@ -17,7 +17,7 @@ function uploadQiniu(ctx: Context) {
     const { filepath, originalFilename } = ctx.request.files.file as any
     // 七牛云 相关文档 https://developer.qiniu.com/kodo/1289/nodejs#1
     const mac = new qiniu.auth.digest.Mac(accessKey, secretKey)
-    const putPolicy = new qiniu.rs.PutPolicy({scope: bucket})
+    const putPolicy = new qiniu.rs.PutPolicy({scope: bucket, expires: 3600 * 24 * 365 * 60})  // 3600为一小时  共60年
     const uploadToken = putPolicy.uploadToken(mac);
     const config: any = new qiniu.conf.Config()
     config.zone = qiniu.zone.Zone_z1;
