@@ -1,4 +1,4 @@
-import { Film } from '../models/index'
+import { Film, Fragment } from '../models/index'
 import type { Context } from "koa"
 
 export async function filmList(ctx: Context) {
@@ -19,4 +19,26 @@ export async function addFilm(ctx: Context) {
     return ctx.status = 201
   }
   return ctx.throw(403, '电影名已重复')
+}
+
+export async function addFragment(ctx: Context) {
+  ctx.verifyParams({
+    filmId: { type: 'string', required: true },
+    fragmentUrl: { type: 'string', required: true }
+  })
+  const { filmId }  = ctx.params
+  const { fragmentUrl } = ctx.request.body
+  await Fragment.create({ filmId, fragmentUrl })
+  return ctx.status = 201
+}
+
+export async function getFragmentList(ctx: Context) {
+  ctx.verifyParams({
+    filmId: { type: 'string', required: true },
+  })
+  const { filmId }  = ctx.params
+  const fragments = await Fragment.findAll({
+    where: { filmId }
+  })
+  ctx.body = fragments
 }
