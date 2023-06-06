@@ -42,3 +42,11 @@ export async function getFragmentList(ctx: Context) {
   })
   ctx.body = fragments
 }
+
+export async function getFragment(ctx: Context) {
+  ctx.verifyParams({
+    fragmentId: { type: 'string', required: true },
+  })
+  const { fragmentId }  = ctx.params
+  ctx.body = await Fragment.findByPk(fragmentId)
+}
