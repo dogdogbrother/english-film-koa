@@ -3,7 +3,7 @@ import * as jwt from 'koa-jwt'
 import { _JWT_KEY_, accessKey, secretKey, bucket } from '../conf/secretKeys'
 import { Context } from 'koa'
 import * as qiniu from 'qiniu'
-
+import * as fs from 'fs'
 
 
 const router = new Router({ prefix: '/file' })
@@ -29,6 +29,8 @@ function uploadQiniu(ctx: Context) {
     formUploader.putFile(uploadToken, originalFilename, filepath, putExtra, (_respErr, respBody, _respInfo) => {
       const publicDownloadUrl = bucketManager.publicDownloadUrl(publicBucketDomain, respBody.key);
       resolve(publicDownloadUrl)
+      // 上次成功后删除缓存
+      fs.unlink(filepath, () => {})
     })
   })
 }

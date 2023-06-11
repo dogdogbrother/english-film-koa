@@ -1,4 +1,4 @@
-import { Film, Fragment } from '../models/index'
+import { Film, Fragment, Caption } from '../models/index'
 import type { Context } from "koa"
 
 export async function filmList(ctx: Context) {
@@ -49,4 +49,44 @@ export async function getFragment(ctx: Context) {
   })
   const { fragmentId }  = ctx.params
   ctx.body = await Fragment.findByPk(fragmentId)
+}
+
+export async function getCaption(ctx: Context) {
+  ctx.verifyParams({
+    fragmentId: { type: 'string', required: true },
+  })
+  const { fragmentId }  = ctx.params
+  const findCaption = await Caption.findOne({
+    where: { fragmentId }
+  })
+  if (findCaption) {
+    const { value } = findCaption
+    ctx.body = JSON.parse(value)
+  } else ctx.body = []
+}
+
+export async function addCaption(ctx: Context) {
+  ctx.verifyParams({
+    fragmentId: { type: 'string', required: true },
+  })
+  const { fragmentId }  = ctx.params
+  const { caption } = ctx.request.body
+  const value = JSON.stringify(caption)
+
+  const [_, created] = await Caption.findOrCreate({
+    where: { fragmentId },
+    defaults: {
+      value
+    }
+  })
+  if (created) {
+    return ctx.status = 201
+  }
+  await Caption.update(
+    { value },
+    {
+      where: { fragmentId }
+    }
+  )
+  return ctx.status = 201
 }
