@@ -82,6 +82,7 @@ export async function addCaption(ctx: Context) {
   if (created) {
     return ctx.status = 201
   }
+  console.log(value)
   await Caption.update(
     { value },
     {

@@ -1,5 +1,5 @@
 import seq from '../db/seq'
-import { STRING, INTEGER } from '../db/types'
+import { INTEGER, TEXT } from '../db/types'
 import { Model, InferAttributes, InferCreationAttributes } from 'sequelize'
 
 class CaptionProp  {
@@ -15,7 +15,7 @@ class CaptionModel extends Model<InferAttributes<CaptionModel>, InferCreationAtt
 }
 const Caption = seq.define<CaptionModel, CaptionProp>('caption', {
   value: {
-    type: STRING,
+    type: TEXT,
     allowNull: false,
     comment: '字幕内容 '
   },
