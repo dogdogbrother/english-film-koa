@@ -53,3 +53,8 @@ export async function collect(ctx: Context) {
   })
   ctx.status = 201
 }
+
+export async function collectList(ctx: Context) {
+  const { id: userId } = ctx.state.user
+  ctx.body = await Word.findAll({where: { userId }})
+}

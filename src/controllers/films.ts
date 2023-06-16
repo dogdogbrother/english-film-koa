@@ -82,7 +82,6 @@ export async function addCaption(ctx: Context) {
   if (created) {
     return ctx.status = 201
   }
-  console.log(value)
   await Caption.update(
     { value },
     {
@@ -90,4 +89,13 @@ export async function addCaption(ctx: Context) {
     }
   )
   return ctx.status = 201
+}
+
+export async function getFragmentInfo(ctx: Context) {
+  ctx.verifyParams({
+    fragmentId: { type: 'string', required: true },
+  })
+  const { fragmentId }  = ctx.params
+  const findFragment = await Fragment.findByPk(fragmentId)
+  ctx.body = findFragment
 }

@@ -1,7 +1,7 @@
 import * as Router from 'koa-router'
 import * as jwt from 'koa-jwt'
 import { _JWT_KEY_ } from '../conf/secretKeys'
-import { filmList, addFilm, addFragment, getFragmentList, getFragment, getCaption, addCaption } from '../controllers/films'
+import { filmList, addFilm, addFragment, getFragmentList, getFragment, getCaption, addCaption, getFragmentInfo } from '../controllers/films'
 
 const router = new Router({ prefix: '/film' })
 const auth = jwt({ secret: _JWT_KEY_ })
@@ -13,5 +13,6 @@ router.get('/:filmId/fragment', auth, getFragmentList)
 router.get('/fragment/:fragmentId', auth, getFragment)
 router.get('/:fragmentId/caption', auth, getCaption)
 router.post('/:fragmentId/caption', auth, addCaption)
+router.post('/fragment/:fragmentId', auth, getFragmentInfo)
 
 export default router
