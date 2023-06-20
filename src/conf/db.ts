@@ -1,7 +1,16 @@
 import { isProd } from '../utils/env'
 import { DEV_MYSQL_KEY, PROD_MYSQL_KEY } from './secretKeys'
 
-let _MYSQL_CONF = {
+interface ConfProp {
+  host?: string
+  user: string
+  password: string
+  port: string | number
+  database: string
+}
+
+let _MYSQL_CONF: ConfProp = {
+  host: '120.46.36.244',
   user: 'root',
   password: DEV_MYSQL_KEY,
   port: '3306',

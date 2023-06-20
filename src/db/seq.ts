@@ -1,7 +1,7 @@
 import { Sequelize } from 'sequelize'
 import { MYSQL_CONF } from '../conf/db'
 import { isProd } from '../utils/env'
-const { user, password, database } = MYSQL_CONF
+const { user, password, database, host } = MYSQL_CONF
 const conf: any = {
   dialect: 'mysql',
   dialectOptions: {
@@ -18,6 +18,8 @@ if (isProd) {
     min: 0, // 最小
     idle: 10000  // 如果一个连接池 10 s 之内没有被使用，则释放
   }
+} else {
+  conf.host = host
 }
 
 const seq = new Sequelize(database, user, password, conf)

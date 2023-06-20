@@ -41,13 +41,12 @@ export async function collect(ctx: Context) {
   ctx.verifyParams({
     word: { type: 'string', required: true },
     filmId: { type: 'string', required: true },
-    keyWord: { type: 'string', required: true },
   })
   const { id: userId } = ctx.state.user
-  const { word, filmId, keyWord } = ctx.request.body as CollectProp 
+  const { word, filmId } = ctx.request.body as CollectProp 
   await Word.create({
     word,
-    keyWord,
+    keyWord: word,  // 暂时用一个 后续用户端优化
     filmId,
     userId
   })

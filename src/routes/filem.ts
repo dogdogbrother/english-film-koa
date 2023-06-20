@@ -6,12 +6,12 @@ import { filmList, addFilm, addFragment, getFragmentList, getFragment, getCaptio
 const router = new Router({ prefix: '/film' })
 const auth = jwt({ secret: _JWT_KEY_ })
 
-router.get('/list', auth, filmList)
+router.get('/list', filmList)
 router.post('/', auth, addFilm)
 router.post('/:filmId/fragment', auth, addFragment)
-router.get('/:filmId/fragment', auth, getFragmentList)
-router.get('/fragment/:fragmentId', auth, getFragment)
-router.get('/:fragmentId/caption', auth, getCaption)
+router.get('/:filmId/fragment', getFragmentList)
+router.get('/fragment/:fragmentId', getFragment)
+router.get('/:fragmentId/caption', getCaption)
 router.post('/:fragmentId/caption', auth, addCaption)
 router.post('/fragment/:fragmentId', auth, getFragmentInfo)
 
