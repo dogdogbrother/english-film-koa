@@ -55,5 +55,8 @@ export async function collect(ctx: Context) {
 
 export async function collectList(ctx: Context) {
   const { id: userId } = ctx.state.user
-  ctx.body = await Word.findAll({where: { userId }})
+  ctx.body = await Word.findAll({
+    where: { userId },
+    include: [ { model: Youdao } ]
+  })
 }

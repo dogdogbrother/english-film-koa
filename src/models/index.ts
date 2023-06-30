@@ -18,6 +18,10 @@ _fragment.belongsTo(_film, {
   foreignKey: 'filmId'
 })
 
-Caption.belongsTo(_fragment, {
+_caption.belongsTo(_fragment, {
   foreignKey: 'fragmentId'
+})
+
+_word.belongsTo(_youdao, {
+  foreignKey: 'keyWord'
 })
