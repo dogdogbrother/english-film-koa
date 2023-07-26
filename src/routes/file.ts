@@ -12,6 +12,13 @@ router.post('/img', auth, async (ctx: Context) => {
   const url = await uploadQiniu(ctx)
   ctx.body = { url }
 })
+router.post('/caption', async (ctx: Context) => {  
+  const { filepath } = ctx.request.files.file as any
+  const fileData = await fs.readFileSync(filepath, 'utf-8')
+  fs.unlink(filepath, () => {})
+  const caption = JSON.parse(fileData).caption
+  ctx.body = caption
+})
 function uploadQiniu(ctx: Context) {
   return new Promise((resolve) => {
     const { filepath, originalFilename } = ctx.request.files.file as any
@@ -24,7 +31,7 @@ function uploadQiniu(ctx: Context) {
     const formUploader = new qiniu.form_up.FormUploader(config)
     const putExtra = new qiniu.form_up.PutExtra()
     const bucketManager = new qiniu.rs.BucketManager(mac, config);
-    const publicBucketDomain = 'http://rvoalg4kz.hb-bkt.clouddn.com'
+    const publicBucketDomain = 'http://file.freetoplay.cn/'
     
     formUploader.putFile(uploadToken, originalFilename, filepath, putExtra, (_respErr, respBody, _respInfo) => {
       const publicDownloadUrl = bucketManager.publicDownloadUrl(publicBucketDomain, respBody.key);
@@ -34,4 +41,5 @@ function uploadQiniu(ctx: Context) {
     })
   })
 }
+
 export default router
