@@ -4,20 +4,34 @@ import { _JWT_KEY_, accessKey, secretKey, bucket } from '../conf/secretKeys'
 import { Context } from 'koa'
 import * as qiniu from 'qiniu'
 import * as fs from 'fs'
-
-
+import { Caption } from '../models/index'
+import * as path from 'path'
+import * as os from 'os'
+interface CaptionValue{
+  origin: string
+  translate: string
+}
 const router = new Router({ prefix: '/file' })
 const auth = jwt({ secret: _JWT_KEY_ })
 router.post('/img', auth, async (ctx: Context) => {
   const url = await uploadQiniu(ctx)
   ctx.body = { url }
 })
-router.post('/caption', async (ctx: Context) => {  
+router.post('/caption', auth, async (ctx: Context) => {  
   const { filepath } = ctx.request.files.file as any
   const fileData = await fs.readFileSync(filepath, 'utf-8')
   fs.unlink(filepath, () => {})
-  const caption = JSON.parse(fileData).caption
-  ctx.body = caption
+  const caption = JSON.parse(fileData)
+  const captionArray = Object.entries(caption).map(([key, value]: [string, CaptionValue]) => {
+    const [start, end] = key.split('-').map(i => Number(i))
+    return {
+      start,
+      end,
+      en: value.origin,
+      cn: value.translate
+    }
+  })
+  ctx.body = captionArray
 })
 function uploadQiniu(ctx: Context) {
   return new Promise((resolve) => {
@@ -41,5 +55,48 @@ function uploadQiniu(ctx: Context) {
     })
   })
 }
-
+// 下载字幕文件
+router.get('/:fragmentId/caption', auth, async (ctx: Context) => {
+  ctx.verifyParams({
+    fragmentId: { type: 'string', required: true },
+  })
+  const { fragmentId }  = ctx.params
+  const findCaption = await Caption.findOne({
+    where: { fragmentId }
+  })
+  const res = {}
+  if (findCaption) {
+    const { value } = findCaption
+    JSON.parse(value).forEach(item => {
+      const { start, end, en, cn} = item
+      res[`${start}-${end}`] = {
+        origin: en,
+        translate: cn
+      }
+    })
+    const filePath = path.resolve(__dirname, '..', `public/${fragmentId}.json`)
+    fs.writeFileSync(filePath, JSON.stringify(res))
+    ctx.body = {
+      url: `http://${getIpAddress()}:7001/${fragmentId}.json`
+    }
+    setTimeout(() => {
+      fs.unlink(filePath, () => {})
+    }, 3000)
+  } else {
+    ctx.status = 404
+  }
+})
 export default router
+
+function getIpAddress() {
+  let ifaces = os.networkInterfaces()
+  for (let dev in ifaces) {
+      let iface = ifaces[dev]
+      for (let i = 0; i < iface.length; i++) {
+          let { family, address, internal } = iface[i]
+          if (family === 'IPv4' && address !== '127.0.0.1' && !internal) {
+              return address
+          }
+      }
+  }
+}
