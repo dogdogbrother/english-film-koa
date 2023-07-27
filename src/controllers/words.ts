@@ -40,7 +40,7 @@ interface CollectProp {
 export async function collect(ctx: Context) {
   ctx.verifyParams({
     word: { type: 'string', required: true },
-    filmId: { type: 'string', required: true },
+    // filmId: { required: true },
   })
   const { id: userId } = ctx.state.user
   const { word, filmId } = ctx.request.body as CollectProp 
