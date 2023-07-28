@@ -60,3 +60,11 @@ export async function collectList(ctx: Context) {
     include: [ { model: Youdao } ]
   })
 }
+
+export async function delCollect(ctx: Context) {
+  const { word  } = ctx.params
+  await Word.destroy({
+    where: { word }
+  })
+  ctx.status = 201
+}
