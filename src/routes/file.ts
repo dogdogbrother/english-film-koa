@@ -77,7 +77,7 @@ router.get('/:fragmentId/caption', auth, async (ctx: Context) => {
     const filePath = path.resolve(__dirname, '..', `public/${fragmentId}.json`)
     fs.writeFileSync(filePath, JSON.stringify(res))
     ctx.body = {
-      url: `http://${getIpAddress()}:7001/${fragmentId}.json`
+      url: `http://120.46.36.244:7001/${fragmentId}.json`  // 暂时不考虑测试环境
     }
     setTimeout(() => {
       fs.unlink(filePath, () => {})
@@ -87,16 +87,3 @@ router.get('/:fragmentId/caption', auth, async (ctx: Context) => {
   }
 })
 export default router
-
-function getIpAddress() {
-  let ifaces = os.networkInterfaces()
-  for (let dev in ifaces) {
-      let iface = ifaces[dev]
-      for (let i = 0; i < iface.length; i++) {
-          let { family, address, internal } = iface[i]
-          if (family === 'IPv4' && address !== '127.0.0.1' && !internal) {
-              return address
-          }
-      }
-  }
-}
